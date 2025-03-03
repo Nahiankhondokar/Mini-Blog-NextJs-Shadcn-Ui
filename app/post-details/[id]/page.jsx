@@ -1,7 +1,23 @@
-"use clent";
+import axios from "axios";
 import React from "react";
 
-const PageDetails = () => {
+const PageDetails = async ({ params }) => {
+  const { id } = await params;
+
+  const post = axios
+    .get("/post/" + id)
+    .then(function (response) {
+      // handle success
+      console.log(response);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+    .finally(function () {
+      // always executed
+    });
+
   return (
     <div className="blogs my-10">
       <div className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100">

@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
 
@@ -8,11 +7,13 @@ function Dashboard() {
     <div className="blogs my-10">
       <div className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100">
         <div className="px-6 py-4">
-          <img
-            src="https://img.freepik.com/free-photo/online-message-blog-chat-communication-envelop-graphic-icon-concept_53876-139717.jpg"
-            alt="post"
-          />
-          <div className="font-bold text-xl mb-2">The Coldest Sunset</div>
+          <Link href="/post-details">
+            <img
+              src="https://img.freepik.com/free-photo/online-message-blog-chat-communication-envelop-graphic-icon-concept_53876-139717.jpg"
+              alt="post"
+            />
+            <div className="font-bold text-xl my-2">The Coldest Sunset</div>
+          </Link>
           <p className="text-gray-700 text-base">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit.
             Voluptatibus quia, nulla! Maiores et perferendis eaque,
