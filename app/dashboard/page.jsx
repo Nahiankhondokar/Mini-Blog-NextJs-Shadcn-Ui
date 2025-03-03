@@ -16,10 +16,17 @@ function Dashboard() {
             exercitationem praesentium nihil.
           </p>
         </div>
-        <div className="w-full h-1 bg-black"></div>
+        <div className="w-full border-1 border-gray-300"></div>
         <div className="px-6 pt-4 pb-2">
-          <div className="comment-area my-3 border-2 border-blue-500 p-2 rounded">
-            <p className="text-black font-bold">Author</p>
+          <div className="comment-area my-3 border-2 border-gray-300 p-2 rounded">
+            <div className="author-area flex items-center gap-2">
+              <img
+                className="w-8 h-8"
+                src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_1280.png"
+                alt=""
+              />
+              <p className="text-black font-bold">Author</p>
+            </div>
             <span className="text-black">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit
               non, vel amet quos ad fugiat enim quia beatae aliquam nostrum.
@@ -28,8 +35,8 @@ function Dashboard() {
         </div>
 
         <div className="px-6 pt-4 pb-2">
-          <form className="max-w-sm mx-auto">
-            <div className="mb-5">
+          <form className="max-w-sm mx-auto flex item-center justify-between gap-2">
+            <div className="w-full">
               <input
                 type="text"
                 id="text"
@@ -39,7 +46,7 @@ function Dashboard() {
             </div>
             <button
               type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="text-white h-10 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               Submit
             </button>
