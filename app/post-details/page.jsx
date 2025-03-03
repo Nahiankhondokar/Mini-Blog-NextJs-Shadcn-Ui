@@ -1,9 +1,7 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+"use clent";
 import React from "react";
 
-function Dashboard() {
+const PageDetails = () => {
   return (
     <div className="blogs my-10">
       <div className="post-create-btn flex justify-center mb-2">
@@ -63,6 +61,6 @@ function Dashboard() {
       </div>
     </div>
   );
-}
+};
 
-export default Dashboard;
+export default PageDetails;
