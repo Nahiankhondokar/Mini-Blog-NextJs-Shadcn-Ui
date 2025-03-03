@@ -4,11 +4,6 @@ import React from "react";
 const PageDetails = () => {
   return (
     <div className="blogs my-10">
-      <div className="post-create-btn flex justify-center mb-2">
-        <Button>
-          <Link href="/post-create">Create Post</Link>
-        </Button>
-      </div>
       <div className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100">
         <div className="px-6 py-4">
           <img
