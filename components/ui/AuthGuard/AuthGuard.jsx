@@ -13,7 +13,9 @@ export default function AuthGuard({ children }) {
     const authToken = localStorage.getItem("authToken");
 
     if (!authToken) {
-      router.push("/"); // Redirect to login if not authenticated
+      if (pathname !== "/") {
+        router.push("/"); // Redirect to login if not authenticated
+      }
       setLoading(false);
       return;
     }

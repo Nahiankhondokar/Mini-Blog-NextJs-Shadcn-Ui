@@ -1,11 +1,10 @@
 "use client";
-import AuthGuard from "@/components/ui/AuthGuard/AuthGuard";
+
 import Link from "next/link";
 import React from "react";
 
 function Dashboard() {
   return (
-    <AuthGuard>
       <div className="blogs my-10">
         <div className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100">
           <div className="px-6 py-4">
@@ -60,7 +59,6 @@ function Dashboard() {
           </div>
         </div>
       </div>
-    </AuthGuard>
   );
 }
 

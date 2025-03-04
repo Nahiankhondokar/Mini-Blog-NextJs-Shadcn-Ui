@@ -1,17 +1,19 @@
 "use client";
-import React, { useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 
-const Home = () => {
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import axios from "axios"; 
+
+function Register() {
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
+    password_confirmation: "",
   });
 
   const route = useRouter();
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -26,18 +28,14 @@ const Home = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/login",
+        "http://127.0.0.1:8000/api/register",
         formData,
         { headers: { "X-Requested-With": "XMLHttpRequest" } }
       );
 
-      localStorage.setItem(
-        "authToken",
-        response.data.data.token)
-      ;
-      route.push("/dashboard");
+      route.push("/");
     } catch (error) {
-      setError(error.response?.data?.message);
+      setError(error.response?.data?.message || "Registration failed.");
     }
 
     setLoading(false);
@@ -45,15 +43,27 @@ const Home = () => {
 
   return (
     <main className="post-create-area">
-      <form
-        className="max-w-sm mx-auto bg-sky-200 p-2 my-5 rounded"
-        onSubmit={handleSubmit}
-      >
+      <form className="max-w-sm mx-auto bg-sky-200 p-2 my-5 rounded" onSubmit={handleSubmit}>
         <div className="title-area text-center font-bold font-lg">
-          <h4>Login</h4>
+          <h4>Registration</h4>
           <div className="w-full border-1 border-sky-700 my-5"></div>
         </div>
+
         {error && <p className="text-red-500 text-center">{error}</p>}
+
+        <div className="mb-5">
+          <label>Name</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            placeholder="Enter your name"
+            required
+          />
+        </div>
+
         <div className="mb-5">
           <label>Email</label>
           <input
@@ -66,15 +76,29 @@ const Home = () => {
             required
           />
         </div>
+
         <div className="mb-5">
           <label>Password</label>
           <input
-            type="text"
+            type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Enter your password"
+            required
+          />
+        </div>
+
+        <div className="mb-5">
+          <label>Confirm Password</label>
+          <input
+            type="password"
+            name="password_confirmation"
+            value={formData.password_confirmation} // ✅ Fixed
+            onChange={handleChange}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            placeholder="Confirm your password"
             required
           />
         </div>
@@ -88,11 +112,14 @@ const Home = () => {
             {loading ? "Loading..." : "Submit"}
           </button>
         </div>
-        <p>have you register?</p>
-        <Link href="/register" className="text-center w-full text-blue-500">register</Link>
+
+        <p className="text-center">Already registered?</p>
+        <Link href="/" className="text-center w-full text-blue-500">
+          Login
+        </Link>
       </form>
     </main>
   );
-};
+}
 
-export default Home;
+export default Register;
