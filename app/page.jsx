@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import AuthGuard from "@/components/ui/AuthGuard/AuthGuard";
 
 const Home = () => {
   const [formData, setFormData] = useState({
@@ -32,8 +33,8 @@ const Home = () => {
 
       localStorage.setItem(
         "authToken",
-        JSON.stringify(response.data.data.token)
-      );
+        response.data.data.token)
+      ;
       route.push("/dashboard");
     } catch (error) {
       setError(error.response?.data?.message);
@@ -43,7 +44,8 @@ const Home = () => {
   };
 
   return (
-    <main className="post-create-area">
+    <AuthGuard>
+      <main className="post-create-area">
       <form
         className="max-w-sm mx-auto bg-sky-200 p-2 my-5 rounded"
         onSubmit={handleSubmit}
@@ -89,6 +91,7 @@ const Home = () => {
         </div>
       </form>
     </main>
+    </AuthGuard>
   );
 };
 
