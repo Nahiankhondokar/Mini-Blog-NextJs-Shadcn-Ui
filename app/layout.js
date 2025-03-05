@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
       <body suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-       <NavBar />
+       {/* <NavBar /> */}
         {children}
       </body>
     </html>

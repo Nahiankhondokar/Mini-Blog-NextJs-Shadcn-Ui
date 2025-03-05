@@ -1,10 +1,18 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import NavBar from "@/components/ui/NavBar/NavBar";
+import userLogout from "@/lib/userLogout";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const Dashboard = () => {
+
   return (
+    <>
+      <NavBar />
+
     <div className="blogs my-10">
         <div className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100">
           <div className="px-6 py-4">
@@ -59,6 +67,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+    </>
   )
 }
 

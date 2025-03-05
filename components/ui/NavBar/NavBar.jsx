@@ -8,8 +8,6 @@ import userLogout from "@/lib/userLogout";
 
 const NavBar = () => {
   const route = useRouter();
-  const [isAuth, setIsAuth] = useState();
-
   const handleLogout = async () => {
     const logoutResponse = await userLogout();
     if(logoutResponse){
@@ -17,14 +15,8 @@ const NavBar = () => {
     }
   }
 
-  useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    setIsAuth(token); 
-  }, []);
-
   return (
     <div className="post-create-btn flex justify-center my-2 gap-2">
-      {isAuth !== null ? (
         <>
           <Button>
             <Link href="/dashboard">Home</Link>
@@ -34,7 +26,6 @@ const NavBar = () => {
           </Button>
           <Button onClick={handleLogout}>Logout</Button>
         </>
-      ) : null}
     </div>
   );
 };

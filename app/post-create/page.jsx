@@ -1,10 +1,17 @@
 "use client";
 import AuthGuard from "@/components/ui/AuthGuard/AuthGuard";
+import { Button } from "@/components/ui/button";
+import NavBar from "@/components/ui/NavBar/NavBar";
+import userLogout from "@/lib/userLogout";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const PostCreate = () => {
+
   return (
-    <AuthGuard>
+    <>
+      <NavBar />
       <main className="post-create-area">
         <form className="max-w-sm mx-auto bg-sky-100 p-2 my-5">
           <div className="title-area text-center font-bold font-md">
@@ -57,7 +64,7 @@ const PostCreate = () => {
           </div>
         </form>
       </main>
-    </AuthGuard>
+    </>
   );
 };
 
