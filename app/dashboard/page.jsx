@@ -3,9 +3,9 @@
 import Link from "next/link";
 import React from "react";
 
-function Dashboard() {
+const Dashboard = () => {
   return (
-      <div className="blogs my-10">
+    <div className="blogs my-10">
         <div className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100">
           <div className="px-6 py-4">
             <Link href="/post-details">
@@ -59,7 +59,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
-  );
+  )
 }
 
-export default Dashboard;
+export default Dashboard
