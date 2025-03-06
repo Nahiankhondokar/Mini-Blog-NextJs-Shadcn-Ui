@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -59,7 +58,7 @@ const PostCreate = () => {
 
       const authToken = localStorage.getItem("authToken");
 
-      const response = await axios.post(
+      await axios.post(
         "http://127.0.0.1:8000/api/post",
         formDataObj,
         {

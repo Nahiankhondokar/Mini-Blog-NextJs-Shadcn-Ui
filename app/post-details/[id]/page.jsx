@@ -4,7 +4,6 @@ import NavBar from "@/components/ui/NavBar/NavBar";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import NoImage from "@/public/noimg.png";
 
 const PageDetails = () => {
   const { id } = useParams();
@@ -45,7 +44,9 @@ const PageDetails = () => {
     <div className="blogs my-10">
       <div className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100">
         <div className="px-6 py-4">
-          {post?.image ? <img src={imagePath + post.image ?? null} alt="post" /> : <img src={NoImage} alt="post" />}
+          {post?.image ? <img src={imagePath + post.image ?? null} alt="post" /> 
+          : 
+          <img src='/noimg.png' alt="post" />}
           
           <div className="font-bold text-xl mb-2">{post?.title}</div>
           <p className="text-gray-700 text-base">

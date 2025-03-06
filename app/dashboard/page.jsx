@@ -1,12 +1,10 @@
 "use client";
-
 import AuthGuard from "@/components/ui/AuthGuard/AuthGuard";
 import NavBar from "@/components/ui/NavBar/NavBar";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import NoImage from "@/public/noimg.png";
 
 const Dashboard = () => {
   const route = useRouter();
