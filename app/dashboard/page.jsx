@@ -57,22 +57,23 @@ const Dashboard = () => {
               <p className="text-gray-700 text-base">{post.desciption}</p>
             </div>
             <div className="w-full border-1 border-gray-300"></div>
+
             <div className="px-6 pt-4 pb-2">
-              <div className="comment-area my-3 border-2 border-gray-300 p-2 rounded">
-                <div className="author-area flex items-center gap-2">
-                  <img
-                    className="w-8 h-8"
-                    src="https://static-00.iconduck.com/assets.00/user-icon-1024x1024-dtzturco.png"
-                    alt="author"
-                  />
-                  <p className="text-black font-bold">Author</p>
-                </div>
-                <span className="text-black">
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Velit non, vel amet quos ad fugiat enim quia beatae aliquam
-                  nostrum.
-                </span>
-              </div>
+              {post.comments.length > 0
+                ? post.comments.map((comment) => {
+                    <div className="comment-area my-3 border-2 border-gray-300 p-2 rounded">
+                      <div className="author-area flex items-center gap-2">
+                        <img
+                          className="w-8 h-8"
+                          src="https://static-00.iconduck.com/assets.00/user-icon-1024x1024-dtzturco.png"
+                          alt="author"
+                        />
+                        <p className="text-black font-bold">Author</p>
+                      </div>
+                      <span className="text-black">{comment.comment}</span>
+                    </div>;
+                  })
+                : "No comments."}
             </div>
 
             <div className="px-6 pt-4 pb-2">
