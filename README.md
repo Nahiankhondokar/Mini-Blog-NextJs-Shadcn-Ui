@@ -1,5 +1,6 @@
 ## How to run this frontend portion of **Mini Blog Application**
 * Clone or Download this repo.
+* Run API server before start frontend.
 * npm install
 * npm run dev
 
