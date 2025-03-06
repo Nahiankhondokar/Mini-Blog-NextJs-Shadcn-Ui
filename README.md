@@ -12,6 +12,8 @@ This project is a simple **Mini Blog System Application** where we login, create
 * Create new blog
 * Submit a new comment
 * Blogs list show
+* Blog Delete
+* Blog Edit/Update
 
 ### Note
 We can add many features to this application to make it more user-friendly and enhance the user experience. The technologies I used to design it are **Next.js, Tailwind CSS, and ShadCN**.
