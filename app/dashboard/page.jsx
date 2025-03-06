@@ -14,9 +14,7 @@ const Dashboard = () => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState("");
-  const [formData, setFormData] = useState({
-    comment: "",
-  });
+  const [formData, setFormData] = useState({});
   const imagePath = "http://127.0.0.1:8000/storage/";
 
   const fetchPosts = async () => {
@@ -33,23 +31,23 @@ const Dashboard = () => {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      console.log(response.data);
+    
       setPosts(response.data.data);
     } catch (error) {
       setError(error.response?.data?.message || "An error occurred.");
-      console.error(error.response);
+      
     }
   };
 
-  const handleChange = (e) => {
-    setFormData({ [e.target.name]: e.target.value });
+  const handleChange = (e, postId) => {
+    setFormData({[postId]: e.target.value});
   };
 
   const handleCommentSubmit = async (e, postId) => {
     e.preventDefault();
 
     const formDataObj = new FormData();
-    formDataObj.append("comment", formData.comment);
+    formDataObj.append("comment", formData[postId]);
     formDataObj.append("post_id", postId);
 
     const authToken = localStorage.getItem("authToken");
@@ -105,7 +103,7 @@ const Dashboard = () => {
                             alt="author"
                           />
                           <p className="text-black font-bold">
-                            {comment.user.name}
+                            {comment?.user?.name}
                           </p>
                         </div>
                         <span className="text-black">{comment.comment}</span>
@@ -123,9 +121,9 @@ const Dashboard = () => {
                     <input
                       type="text"
                       id="text"
-                      name="comment"
-                      value={formData.comment}
-                      onChange={handleChange}
+                      name={post.id}
+                      value={formData[post.id]}
+                      onChange={(e) => handleChange(e, post.id)}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Comment..."
                     />
