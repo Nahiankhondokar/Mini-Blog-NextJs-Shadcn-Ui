@@ -5,6 +5,8 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 
 const Dashboard = () => {
   const route = useRouter();
@@ -40,14 +42,15 @@ const Dashboard = () => {
     setFormData({[postId]: e.target.value});
   };
 
+  
+
   const handleCommentSubmit = async (e, postId) => {
     e.preventDefault();
+    const authToken = localStorage.getItem("authToken");
 
     const formDataObj = new FormData();
     formDataObj.append("comment", formData[postId]);
     formDataObj.append("post_id", postId);
-
-    const authToken = localStorage.getItem("authToken");
 
     await axios.post("http://127.0.0.1:8000/api/comment-store", formDataObj, {
       headers: {
@@ -61,6 +64,17 @@ const Dashboard = () => {
     route.push("/dashboard");
   };
 
+  const handlePostDelete = async (id) => {
+    const authToken = localStorage.getItem("authToken");
+    await axios.delete("http://127.0.0.1:8000/api/post/"+id, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
+    setSuccess("Comment deleted successfully");
+  }
+
   useEffect(() => {
     fetchPosts();
   }, [success]);
@@ -71,12 +85,18 @@ const Dashboard = () => {
         <NavBar />
 
         <div className="blogs my-10">
+          
           {success && <p className="text-green-500 text-center">{success}</p>}
           {posts.map((post) => (
+            
             <div
               key={post.id}
               className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100 my-5"
             >
+              <div className="action-btns flex gap-2 justify-end p-1">
+                <button className="text-blue-900"><FaRegEdit /></button>
+                <button className="text-red-900" onClick={()=>handlePostDelete(post.id)}><FaRegTrashAlt /></button>
+              </div>
               <div className="px-6 py-4">
                 <Link href={`/post-details/${post.id}`}>
                    {post?.image ? <img src={imagePath + post.image ?? null} alt="post" /> 
