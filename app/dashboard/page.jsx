@@ -42,8 +42,6 @@ const Dashboard = () => {
     setFormData({[postId]: e.target.value});
   };
 
-  
-
   const handleCommentSubmit = async (e, postId) => {
     e.preventDefault();
     const authToken = localStorage.getItem("authToken");
@@ -59,8 +57,8 @@ const Dashboard = () => {
       },
     });
 
+    setFormData({ [postId]: "" });
     setSuccess("Comment stored successfully");
-    setFormData({ comment: "" });
     route.push("/dashboard");
   };
 
@@ -86,7 +84,7 @@ const Dashboard = () => {
 
         <div className="blogs my-10">
           
-          {success && <p className="text-green-500 text-center">{success}</p>}
+          {success && <p className="text-green-500 text-center text-lg font-medium">{success}</p>}
           {posts.map((post) => (
             
             <div
@@ -94,7 +92,7 @@ const Dashboard = () => {
               className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100 my-5"
             >
               <div className="action-btns flex gap-2 justify-end p-1">
-                <button className="text-blue-900"><FaRegEdit /></button>
+                <Link href={`/post-edit/${post.id}`} className="text-blue-900"><FaRegEdit /></Link>
                 <button className="text-red-900" onClick={()=>handlePostDelete(post.id)}><FaRegTrashAlt /></button>
               </div>
               <div className="px-6 py-4">

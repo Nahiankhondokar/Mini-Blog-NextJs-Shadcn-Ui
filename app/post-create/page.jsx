@@ -99,7 +99,6 @@ const PostCreate = () => {
     <>
       <AuthGuard>
         <NavBar />
-
         <main className="post-create-area ">
           <form
             className="max-w-sm mx-auto bg-sky-100 p-2 my-5 shadow-lg rounded"
