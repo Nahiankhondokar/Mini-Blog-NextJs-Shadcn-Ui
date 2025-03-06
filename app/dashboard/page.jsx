@@ -1,13 +1,12 @@
 "use client";
 
 import AuthGuard from "@/components/ui/AuthGuard/AuthGuard";
-import { Button } from "@/components/ui/button";
 import NavBar from "@/components/ui/NavBar/NavBar";
-import userLogout from "@/lib/userLogout";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import NoImage from "@/public/noimg.png";
 
 const Dashboard = () => {
   const route = useRouter();
@@ -81,8 +80,11 @@ const Dashboard = () => {
               className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100 my-5"
             >
               <div className="px-6 py-4">
-                <Link href="/post-details">
-                  <img src={imagePath + post.image ?? null} alt="post" />
+                <Link href={`/post-details/${post.id}`}>
+                   {post?.image ? <img src={imagePath + post.image ?? null} alt="post" /> 
+                   : 
+                   <img className="text-center" src="/noimg.png" alt="post" />}
+                            
                   <div className="font-bold text-xl my-2">{post.title}</div>
                 </Link>
                 <p className="text-gray-700 text-base">{post.desciption}</p>

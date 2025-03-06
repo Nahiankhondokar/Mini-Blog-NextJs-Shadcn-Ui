@@ -1,76 +1,85 @@
+"use client"
+import AuthGuard from "@/components/ui/AuthGuard/AuthGuard";
+import NavBar from "@/components/ui/NavBar/NavBar";
 import axios from "axios";
-import React from "react";
+import { useParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import NoImage from "@/public/noimg.png";
 
-const PageDetails = async ({ params }) => {
-  const { id } = await params;
+const PageDetails = () => {
+  const { id } = useParams();
+  const [post, setPost] = useState(null);
 
-  const post = axios
-    .get("/post/" + id)
-    .then(function (response) {
-      // handle success
-      console.log(response);
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    })
-    .finally(function () {
-      // always executed
-    });
+  useEffect(() => {
+    const getPostDetails = async () => {
+      const authToken = localStorage.getItem("authToken");
+
+      if (!authToken) {
+        console.log("No auth token found");
+        return;
+      }
+
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/post/${id}`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        });
+        setPost(response.data.data);
+      } catch (error) {
+        console.error("Error fetching post:", error);
+      }
+    };
+
+    if (id) {
+      getPostDetails();
+    }
+  }, [id]);
 
   return (
+   <>
+   <AuthGuard>
+    <NavBar />
+
     <div className="blogs my-10">
       <div className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100">
         <div className="px-6 py-4">
-          <img
-            src="https://img.freepik.com/free-photo/online-message-blog-chat-communication-envelop-graphic-icon-concept_53876-139717.jpg"
-            alt="post"
-          />
-          <div className="font-bold text-xl mb-2">The Coldest Sunset</div>
+          {post?.image ? <img src={imagePath + post.image ?? null} alt="post" /> : <img src={NoImage} alt="post" />}
+          
+          <div className="font-bold text-xl mb-2">{post?.title}</div>
           <p className="text-gray-700 text-base">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Voluptatibus quia, nulla! Maiores et perferendis eaque,
-            exercitationem praesentium nihil.
+          {post?.desciption}
           </p>
         </div>
         <div className="w-full border-1 border-gray-300"></div>
         <div className="px-6 pt-4 pb-2">
-          <div className="comment-area my-3 border-2 border-gray-300 p-2 rounded">
-            <div className="author-area flex items-center gap-2">
-              <img
-                className="w-8 h-8"
-                src="https://static-00.iconduck.com/assets.00/user-icon-1024x1024-dtzturco.png"
-                alt="author"
-              />
-              <p className="text-black font-bold">Author</p>
+          {post?.comments.length > 0
+            ? post?.comments.map((comment) => (
+                <div
+                  key={comment.id}
+                  className="comment-area my-3 border-2 border-gray-300 p-2 rounded"
+                >
+                  <div className="author-area flex items-center gap-2">
+                    <img
+                      className="w-8 h-8"
+                      src="https://static-00.iconduck.com/assets.00/user-icon-1024x1024-dtzturco.png"
+                      alt="author"
+                    />
+                    <p className="text-black font-bold">
+                      {comment?.user?.name}
+                    </p>
+                  </div>
+                  <span className="text-black">{comment.comment}</span>
+                </div>
+              ))
+            : "No comments."}
             </div>
-            <span className="text-black">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit
-              non, vel amet quos ad fugiat enim quia beatae aliquam nostrum.
-            </span>
-          </div>
-        </div>
 
-        <div className="px-6 pt-4 pb-2">
-          <form className="max-w-sm mx-auto flex item-center justify-between gap-2">
-            <div className="w-full">
-              <input
-                type="text"
-                id="text"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Comment..."
-              />
-            </div>
-            <button
-              type="submit"
-              className="text-white h-10 bg-sky-700 hover:bg-sky-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-300 dark:focus:ring-blue-800"
-            >
-              Submit
-            </button>
-          </form>
-        </div>
       </div>
     </div>
+   </AuthGuard>
+   </>
   );
 };
 
