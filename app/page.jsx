@@ -68,7 +68,7 @@ const Home = () => {
           <div className="mb-5">
             <label>Password</label>
             <input
-              type="text"
+              type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
