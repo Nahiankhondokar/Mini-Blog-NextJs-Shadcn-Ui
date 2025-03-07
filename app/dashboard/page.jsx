@@ -85,15 +85,15 @@ const Dashboard = () => {
         <div className="blogs my-10">
           
           {success && <p className="text-green-500 text-center text-lg font-medium">{success}</p>}
-          {posts.map((post) => (
+          {posts.length > 0 ? posts.map((post) => (
             
             <div
               key={post.id}
               className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100 my-5 border-2 border-blue-300"
             >
               <div className="action-btns flex gap-2 justify-end p-1">
-                <Link href={`/post-edit/${post.id}`} className="text-blue-900"><FaRegEdit /></Link>
-                <button className="text-red-900" onClick={()=>handlePostDelete(post.id)}><FaRegTrashAlt /></button>
+                <Link href={`/post-edit/${post.id}`} className="text-white p-1 rounded bg-blue-500"><FaRegEdit /></Link>
+                <button className="text-white p-1 cursor-pointer rounded bg-red-500" onClick={()=>handlePostDelete(post.id)}><FaRegTrashAlt /></button>
               </div>
               <div className="px-6 py-4">
                 <Link href={`/post-details/${post.id}`}>
@@ -156,7 +156,15 @@ const Dashboard = () => {
                 </form>
               </div>
             </div>
-          ))}
+          )) 
+          :
+          <div
+            
+              className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100 my-5 border-2 border-red-500 text-center p-5 font-bold"
+            >
+             No Blog Found
+            </div>
+          }
         </div>
       </AuthGuard>
     </>

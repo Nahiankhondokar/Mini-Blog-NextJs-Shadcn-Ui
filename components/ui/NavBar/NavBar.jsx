@@ -18,13 +18,14 @@ const NavBar = () => {
   return (
     <div className="post-create-btn flex justify-center my-2 gap-2">
         <>
-          <Button>
+          <Button className="cursor-pointer">
             <Link href="/dashboard">Home</Link>
           </Button>
-          <Button>
+          <Button className="cursor-pointer">
             <Link href="/post-create">Create Post</Link>
           </Button>
-          <Button onClick={handleLogout}>Logout</Button>
+          <Button className="bg-red-500 text-white cursor-pointer
+" onClick={handleLogout}>Logout</Button>
         </>
     </div>
   );

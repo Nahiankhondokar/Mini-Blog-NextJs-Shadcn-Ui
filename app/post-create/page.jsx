@@ -175,7 +175,7 @@ const PostCreate = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-sky-700 text-white px-4 py-2 rounded"
+                className="bg-sky-700 text-white px-4 py-2 rounded w-full"
               >
                 {loading ? "Submitting..." : "Create Post"}
               </button>

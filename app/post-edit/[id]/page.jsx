@@ -55,7 +55,7 @@ const PostEdit = () => {
   
         } catch (error) {
             setLoading(false)
-            setError(error.response?.data?.message || "Something went wrong.");
+            setError("Post update failded");
        }
     }
 
@@ -68,28 +68,31 @@ const PostEdit = () => {
       };
 
     const fetchEditPost = async () => {
+        setLoading(true);
         const authToken = localStorage.getItem('authToken')
         await axios.get(`http://127.0.0.1:8000/api/post/${id}`, {
         headers : {
             Authorization: `Bearer ${authToken}`,
         }
        })
-        .then((response) => {
-            let arrCat = [];
-            response.data.data.categories.map((cat) => {
-                arrCat.push(String(cat.id));
-            });
+      .then((response) => {
+          let arrCat = [];
+          response.data.data.categories.map((cat) => {
+              arrCat.push(String(cat.id));
+          });
 
-            setFormData({
-                title: response.data.data?.title,
-                desciption: response.data.data?.desciption,
-                image: response.data.data?.image,
-                categories : arrCat
-            });
-        })
-        .catch((error) => {
-            console.log(error)
-        });
+          setFormData({
+              title: response.data.data?.title,
+              desciption: response.data.data?.desciption,
+              image: response.data.data?.image,
+              categories : arrCat
+          });
+
+          setLoading(false);
+      })
+      .catch((error) => {
+          console.log(error)
+      });
     }
 
     const handleCategoryChange = (e) => {
@@ -116,99 +119,104 @@ const PostEdit = () => {
         }
     };
 
-
     useEffect(() => {
         fetchCategories();
         fetchEditPost();
     }, [id]);
+
   return (
     <>
-    <AuthGuard>
+      <AuthGuard>
         <NavBar />
-        <main className="post-create-area ">
-          <form
-            className="max-w-sm mx-auto bg-sky-100 p-2 my-5 shadow-lg rounded"
-            onSubmit={handleSubmit}
-          >
-            <div className="title-area text-center font-bold font-md">
-              <h4>Update Post</h4>
-              <div className="w-full border-1 border-gray-300 my-5"></div>
-            </div>
 
-            {error && <p className="text-red-500 text-center bg-gray-900">{error}</p>}
-            {success && <p className="text-green-500 text-center bg-gray-900">{success}</p>}
+        {loading == false ? 
+          <main className="post-create-area ">
+            <form
+              className="max-w-sm mx-auto bg-sky-100 p-2 my-5 shadow-lg rounded"
+              onSubmit={handleSubmit}
+            >
+              <div className="title-area text-center font-bold font-md">
+                <h4>Update Post</h4>
+                <div className="w-full border-1 border-gray-300 my-5"></div>
+              </div>
 
-            <div className="mb-5">
-              <label>Title</label>
-              <input
-                type="text"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                className="border rounded-lg p-2 w-full bg-gray-100  border-gray-900 "
-                placeholder="Enter title"
-                required
-              />
-            </div>
+              {error && <p className="text-red-500 text-center font-bold">{error}</p>}
+              {success && <p className="text-green-500 text-center font-bold">{success}</p>}
 
-            <div className="mb-5">
-              <label>Description</label>
-              <textarea
-                name="desciption"
-                value={formData.desciption}
-                onChange={handleChange}
-                className="border rounded-lg p-2 w-full bg-gray-100 border-gray-900 "
-                placeholder="Enter desciption"
-                required
-              />
-            </div>
+              <div className="mb-5">
+                <label>Title</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  className="border rounded-lg p-2 w-full bg-gray-100  border-gray-900 "
+                  placeholder="Enter title"
+                  required
+                />
+              </div>
 
-            <div className="mb-5">
-              <label>Upload Image</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="block w-full mt-2 border-1 p-2"
-              />
-            </div>
+              <div className="mb-5">
+                <label>Description</label>
+                <textarea
+                  name="desciption"
+                  value={formData.desciption}
+                  onChange={handleChange}
+                  className="border rounded-lg p-2 w-full bg-gray-100 border-gray-900 "
+                  placeholder="Enter desciption"
+                  required
+                />
+              </div>
 
-            <label>Categories</label>
-            {categories.length > 0 ? (
-              categories.map((category) => (
-                <div className="flex items-center mb-2" key={category.id}>
-                  <input
-                    id={`category-${category.id}`}
-                    type="checkbox"
-                    value={category.id}
-                    checked={formData.categories.includes(String(category.id))}
-                    onChange={handleCategoryChange}
-                    className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                  />
-                  <label
-                    htmlFor={`category-${category.id}`}
-                    className="ml-2 text-sm text-gray-900"
-                  >
-                    {category.name}
-                  </label>
-                </div>
-              ))
-            ) : (
-              <p className="text-gray-500 text-sm">No categories available.</p>
-            )}
+              <div className="mb-5">
+                <label>Upload Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="block w-full mt-2 border-1 p-2"
+                />
+              </div>
 
-            <div className="flex items-center">
-              <button
-                type="submit"
-                disabled={loading}
-                className="bg-sky-700 text-white px-4 py-2 rounded w-full"
-              >
-                {loading ? "Submitting..." : "Update Post"}
-              </button>
-            </div>
-          </form>
-        </main>
-    </AuthGuard>
+              <label>Categories</label>
+              {categories.length > 0 ? (
+                categories.map((category) => (
+                  <div className="flex items-center mb-2" key={category.id}>
+                    <input
+                      id={`category-${category.id}`}
+                      type="checkbox"
+                      value={category.id}
+                      checked={formData.categories.includes(String(category.id))}
+                      onChange={handleCategoryChange}
+                      className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                    />
+                    <label
+                      htmlFor={`category-${category.id}`}
+                      className="ml-2 text-sm text-gray-900"
+                    >
+                      {category.name}
+                    </label>
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500 text-sm">No categories available.</p>
+              )}
+
+              <div className="flex items-center">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-sky-700 text-white px-4 py-2 rounded w-full"
+                >
+                  {loading ? "Submitting..." : "Update Post"}
+                </button>
+              </div>
+            </form>
+          </main>
+          : 
+          <div className='text-blue-900 font-bold text-lg text-center'>Loading...</div>
+        }
+      </AuthGuard>
     </>
   )
 }
