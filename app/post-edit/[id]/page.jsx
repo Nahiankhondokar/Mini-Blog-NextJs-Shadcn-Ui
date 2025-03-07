@@ -1,7 +1,7 @@
 "use client"
 import AuthGuard from '@/components/ui/AuthGuard/AuthGuard'
 import NavBar from '@/components/ui/NavBar/NavBar'
-import axios from 'axios'
+import api from '@/lib/axiosInstance'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
@@ -28,27 +28,16 @@ const PostEdit = () => {
             formDataObj.append("title", formData.title);
             formDataObj.append("desciption", formData.desciption);
             formData.categories.forEach((category) => {
-                formDataObj.append("categories[]", category);
-              });
-              formDataObj.append("_method", "PATCH");
+              formDataObj.append("categories[]", category);
+            });
+            formDataObj.append("_method", "PATCH");
 
             if (formData.image) {
+              console.log('call')
                 formDataObj.append("image", formData.image);
             }
-
-            const authToken = localStorage.getItem("authToken");
-            await axios.post(
-                `http://127.0.0.1:8000/api/post/${id}`,
-                formDataObj,
-                {
-                    headers: {
-                    "Content-Type": "multipart/form-data",
-                    "X-Requested-With": "XMLHttpRequest",
-                    Authorization: `Bearer ${authToken}`,
-                    },
-                }
-            );
-
+            await api.post(`/post/${id}`, formDataObj);
+            setLoading(false)
             setSuccess("Post updated successfully!");
             setFormData({ title: "", desciption: "", categories: [], image: null });
             route.push("/dashboard");
@@ -58,7 +47,7 @@ const PostEdit = () => {
             setError("Post update failded");
        }
     }
-
+console.log(formData)
     const handleChange = (e) => {
         setFormData({...formData, [e.target.name] : e.target.value})
     }
@@ -69,12 +58,7 @@ const PostEdit = () => {
 
     const fetchEditPost = async () => {
         setLoading(true);
-        const authToken = localStorage.getItem('authToken')
-        await axios.get(`http://127.0.0.1:8000/api/post/${id}`, {
-        headers : {
-            Authorization: `Bearer ${authToken}`,
-        }
-       })
+        await api.get(`/post/${id}`)
       .then((response) => {
           let arrCat = [];
           response.data.data.categories.map((cat) => {
@@ -109,10 +93,7 @@ const PostEdit = () => {
 
     const fetchCategories = async () => {
         try {
-            const authToken = localStorage.getItem("authToken");
-            const response = await axios.get("http://127.0.0.1:8000/api/categories", {
-            headers: { Authorization: `Bearer ${authToken}` },
-            });
+            const response = await api.get("/categories");
             setCategories(response.data.data);
         } catch (error) {
             console.error("Error fetching categories:", error);

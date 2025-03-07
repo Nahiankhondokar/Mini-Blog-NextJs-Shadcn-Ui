@@ -1,6 +1,7 @@
 "use client";
 import AuthGuard from "@/components/ui/AuthGuard/AuthGuard";
 import NavBar from "@/components/ui/NavBar/NavBar";
+import api from "@/lib/axiosInstance";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -24,12 +25,7 @@ const Dashboard = () => {
         return;
       }
 
-      const response = await axios.get("http://127.0.0.1:8000/api/post", {
-        headers: {
-          "X-Requested-With": "XMLHttpRequest",
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+      const response = await api.get("/post");
     
       setPosts(response.data.data);
     } catch (error) {
@@ -44,18 +40,11 @@ const Dashboard = () => {
 
   const handleCommentSubmit = async (e, postId) => {
     e.preventDefault();
-    const authToken = localStorage.getItem("authToken");
 
     const formDataObj = new FormData();
     formDataObj.append("comment", formData[postId]);
     formDataObj.append("post_id", postId);
-
-    await axios.post("http://127.0.0.1:8000/api/comment-store", formDataObj, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
+    await api.post("/comment-store", formDataObj);
 
     setFormData({ [postId]: "" });
     setSuccess("Comment stored successfully");
@@ -63,13 +52,7 @@ const Dashboard = () => {
   };
 
   const handlePostDelete = async (id) => {
-    const authToken = localStorage.getItem("authToken");
-    await axios.delete("http://127.0.0.1:8000/api/post/"+id, {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
-
+    await api.delete("/post/"+id);
     setSuccess("Comment deleted successfully");
   }
 

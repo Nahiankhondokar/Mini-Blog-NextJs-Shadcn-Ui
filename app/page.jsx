@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AuthGuard from "@/components/ui/AuthGuard/AuthGuard";
+import api from "@/lib/axiosInstance";
 
 const Home = () => {
   const [formData, setFormData] = useState({
@@ -26,10 +27,8 @@ const Home = () => {
     setError("");
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/login",
-        formData,
-        { headers: { "X-Requested-With": "XMLHttpRequest" } }
+      const response = await api.post("/login",
+        formData
       );
 
       localStorage.setItem("authToken", response.data.data.token);

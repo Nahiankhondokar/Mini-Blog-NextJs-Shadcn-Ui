@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
 import AuthGuard from "@/components/ui/AuthGuard/AuthGuard";
+import api from "@/lib/axiosInstance";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -27,10 +28,10 @@ const Register = () => {
     setError("");
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/register",
+      const response = await api.post(
+        "/register",
         formData,
-        { headers: { "X-Requested-With": "XMLHttpRequest" } }
+        
       );
 
       route.push("/");

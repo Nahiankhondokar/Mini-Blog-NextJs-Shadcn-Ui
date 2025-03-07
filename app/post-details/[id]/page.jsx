@@ -1,6 +1,7 @@
 "use client"
 import AuthGuard from "@/components/ui/AuthGuard/AuthGuard";
 import NavBar from "@/components/ui/NavBar/NavBar";
+import api from "@/lib/axiosInstance";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -19,12 +20,7 @@ const PageDetails = () => {
       }
 
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/post/${id}`, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-            "X-Requested-With": "XMLHttpRequest",
-          },
-        });
+        const response = await api.get(`/post/${id}`);
         setPost(response.data.data);
       } catch (error) {
         console.error("Error fetching post:", error);

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import NavBar from "@/components/ui/NavBar/NavBar";
 import AuthGuard from "@/components/ui/AuthGuard/AuthGuard";
+import api from "@/lib/axiosInstance";
 
 const PostCreate = () => {
   const [formData, setFormData] = useState({
@@ -55,19 +56,7 @@ const PostCreate = () => {
       if (formData.image) {
         formDataObj.append("image", formData.image);
       }
-
-      const authToken = localStorage.getItem("authToken");
-
-      await axios.post(
-        "http://127.0.0.1:8000/api/post",
-        formDataObj,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
+      await api.post("/post",formDataObj,);
 
       setSuccess("Post created successfully!");
       setFormData({ title: "", desciption: "", categories: [], image: null });
@@ -82,9 +71,7 @@ const PostCreate = () => {
   const fetchCategories = async () => {
     try {
       const authToken = localStorage.getItem("authToken");
-      const response = await axios.get("http://127.0.0.1:8000/api/categories", {
-        headers: { Authorization: `Bearer ${authToken}` },
-      });
+      const response = await api.get("/categories");
       setCategories(response.data.data);
     } catch (error) {
       console.error("Error fetching categories:", error);
