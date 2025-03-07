@@ -89,7 +89,7 @@ const Dashboard = () => {
             
             <div
               key={post.id}
-              className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100 my-5"
+              className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100 my-5 border-2 border-blue-300"
             >
               <div className="action-btns flex gap-2 justify-end p-1">
                 <Link href={`/post-edit/${post.id}`} className="text-blue-900"><FaRegEdit /></Link>
@@ -105,7 +105,7 @@ const Dashboard = () => {
                 </Link>
                 <p className="text-gray-700 text-base">{post.desciption}</p>
               </div>
-              <div className="w-full border-1 border-gray-300"></div>
+              <div className="w-full border-1 border-blue-300"></div>
 
               <div className="px-6 pt-4 pb-2">
                 {post?.comments.length > 0
