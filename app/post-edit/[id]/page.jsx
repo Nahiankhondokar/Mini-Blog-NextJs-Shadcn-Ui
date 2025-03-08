@@ -1,116 +1,116 @@
-"use client"
-import AuthGuard from '@/components/ui/AuthGuard/AuthGuard'
-import NavBar from '@/components/ui/NavBar/NavBar'
-import api from '@/lib/axiosInstance'
-import { useParams, useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+"use client";
+import AuthGuard from "@/components/ui/AuthGuard/AuthGuard";
+import NavBar from "@/components/ui/NavBar/NavBar";
+import api from "@/lib/axiosInstance";
+import { useParams, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 const PostEdit = () => {
-    const {id} = useParams();
-    const route = useRouter();
-    const [loading, setLoading] = useState(false)
-    const [categories, setCategories] = useState([])
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
-    const [formData, setFormData] = useState({
-        title: "",
-        desciption: "",
-        image: null,
-        categories: [],
-    });
+  const { id } = useParams();
+  const route = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [formData, setFormData] = useState({
+    title: "",
+    desciption: "",
+    image: null,
+    categories: [],
+  });
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        
-       try {
-            const formDataObj = new FormData();
-            formDataObj.append("title", formData.title);
-            formDataObj.append("desciption", formData.desciption);
-            formData.categories.forEach((category) => {
-              formDataObj.append("categories[]", category);
-            });
-            formDataObj.append("_method", "PATCH");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-            if (formData.image) {
-              console.log('call')
-                formDataObj.append("image", formData.image);
-            }
-            await api.post(`/post/${id}`, formDataObj);
-            setLoading(false)
-            setSuccess("Post updated successfully!");
-            setFormData({ title: "", desciption: "", categories: [], image: null });
-            route.push("/dashboard");
-  
-        } catch (error) {
-            setLoading(false)
-            setError("Post update failded");
-       }
+    try {
+      const formDataObj = new FormData();
+      formDataObj.append("title", formData.title);
+      formDataObj.append("desciption", formData.desciption);
+      formData.categories.forEach((category) => {
+        formDataObj.append("categories[]", category);
+      });
+      formDataObj.append("_method", "PATCH");
+
+      if (formData.image) {
+        console.log("call");
+        formDataObj.append("image", formData.image);
+      }
+      await api.post(`/post/${id}`, formDataObj);
+      setLoading(false);
+      setSuccess("Post updated successfully!");
+      setFormData({ title: "", desciption: "", categories: [], image: null });
+      route.push("/dashboard");
+    } catch (error) {
+      setLoading(false);
+      setError("Post update failded");
     }
-console.log(formData)
-    const handleChange = (e) => {
-        setFormData({...formData, [e.target.name] : e.target.value})
-    }
+  };
+  console.log(formData);
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-    const handleFileChange = (e) => {
-        setFormData({ ...formData, image: e.target.files[0] });
-      };
+  const handleFileChange = (e) => {
+    setFormData({ ...formData, image: e.target.files[0] });
+  };
 
-    const fetchEditPost = async () => {
-        setLoading(true);
-        await api.get(`/post/${id}`)
+  const fetchEditPost = async () => {
+    setLoading(true);
+    await api
+      .get(`/post/${id}`)
       .then((response) => {
-          let arrCat = [];
-          response.data.data.categories.map((cat) => {
-              arrCat.push(String(cat.id));
-          });
+        let arrCat = [];
+        response.data.data.categories.map((cat) => {
+          arrCat.push(String(cat.id));
+        });
 
-          setFormData({
-              title: response.data.data?.title,
-              desciption: response.data.data?.desciption,
-              image: response.data.data?.image,
-              categories : arrCat
-          });
+        setFormData({
+          title: response.data.data?.title,
+          desciption: response.data.data?.desciption,
+          image: response.data.data?.image,
+          categories: arrCat,
+        });
 
-          setLoading(false);
+        setLoading(false);
       })
       .catch((error) => {
-          console.log(error)
+        console.log(error);
       });
+  };
+
+  const handleCategoryChange = (e) => {
+    const { value } = e.target;
+    setFormData((prevState) => {
+      const updatedCategories = new Set(prevState.categories);
+      updatedCategories.has(value)
+        ? updatedCategories.delete(value)
+        : updatedCategories.add(value);
+
+      return { ...prevState, categories: Array.from(updatedCategories) };
+    });
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await api.get("/categories");
+      setCategories(response.data.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
     }
+  };
 
-    const handleCategoryChange = (e) => {
-        const { value } = e.target;
-        setFormData((prevState) => {
-            const updatedCategories = new Set(prevState.categories);
-            updatedCategories.has(value)
-            ? updatedCategories.delete(value)
-            : updatedCategories.add(value);
-
-            return { ...prevState, categories: Array.from(updatedCategories) };
-        });
-    };
-
-    const fetchCategories = async () => {
-        try {
-            const response = await api.get("/categories");
-            setCategories(response.data.data);
-        } catch (error) {
-            console.error("Error fetching categories:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchCategories();
-        fetchEditPost();
-    }, [id]);
+  useEffect(() => {
+    fetchCategories();
+    fetchEditPost();
+  }, [id]);
 
   return (
     <>
       <AuthGuard>
         <NavBar />
 
-        {loading == false ? 
+        {loading == false ? (
           <main className="post-create-area ">
             <form
               className="max-w-sm mx-auto bg-sky-100 p-2 my-5 shadow-lg rounded"
@@ -121,8 +121,14 @@ console.log(formData)
                 <div className="w-full border-1 border-gray-300 my-5"></div>
               </div>
 
-              {error && <p className="text-red-500 text-center font-bold">{error}</p>}
-              {success && <p className="text-green-500 text-center font-bold">{success}</p>}
+              {error && (
+                <p className="text-red-500 text-center font-bold">{error}</p>
+              )}
+              {success && (
+                <p className="text-green-500 text-center font-bold">
+                  {success}
+                </p>
+              )}
 
               <div className="mb-5">
                 <label>Title</label>
@@ -167,7 +173,9 @@ console.log(formData)
                       id={`category-${category.id}`}
                       type="checkbox"
                       value={category.id}
-                      checked={formData.categories.includes(String(category.id))}
+                      checked={formData.categories.includes(
+                        String(category.id)
+                      )}
                       onChange={handleCategoryChange}
                       className="w-4 h-4 text-blue-600 focus:ring-blue-500"
                     />
@@ -180,7 +188,9 @@ console.log(formData)
                   </div>
                 ))
               ) : (
-                <p className="text-gray-500 text-sm">No categories available.</p>
+                <p className="text-gray-500 text-sm">
+                  No categories available.
+                </p>
               )}
 
               <div className="flex items-center">
@@ -194,12 +204,14 @@ console.log(formData)
               </div>
             </form>
           </main>
-          : 
-          <div className='text-blue-900 font-bold text-lg text-center'>Loading...</div>
-        }
+        ) : (
+          <div className="text-blue-900 font-bold text-lg text-center">
+            Loading...
+          </div>
+        )}
       </AuthGuard>
     </>
-  )
-}
+  );
+};
 
-export default PostEdit
+export default PostEdit;

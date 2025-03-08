@@ -56,7 +56,7 @@ const PostCreate = () => {
       if (formData.image) {
         formDataObj.append("image", formData.image);
       }
-      await api.post("/post",formDataObj,);
+      await api.post("/post", formDataObj);
 
       setSuccess("Post created successfully!");
       setFormData({ title: "", desciption: "", categories: [], image: null });

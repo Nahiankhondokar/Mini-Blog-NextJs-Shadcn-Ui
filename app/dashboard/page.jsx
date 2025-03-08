@@ -26,16 +26,15 @@ const Dashboard = () => {
       }
 
       const response = await api.get("/post");
-    
+
       setPosts(response.data.data);
     } catch (error) {
       setError(error.response?.data?.message || "An error occurred.");
-      
     }
   };
 
   const handleChange = (e, postId) => {
-    setFormData({[postId]: e.target.value});
+    setFormData({ [postId]: e.target.value });
   };
 
   const handleCommentSubmit = async (e, postId) => {
@@ -52,9 +51,9 @@ const Dashboard = () => {
   };
 
   const handlePostDelete = async (id) => {
-    await api.delete("/post/"+id);
+    await api.delete("/post/" + id);
     setSuccess("Comment deleted successfully");
-  }
+  };
 
   useEffect(() => {
     fetchPosts();
@@ -66,88 +65,104 @@ const Dashboard = () => {
         <NavBar />
 
         <div className="blogs my-10">
-          
-          {success && <p className="text-green-500 text-center text-lg font-medium">{success}</p>}
-          {posts.length > 0 ? posts.map((post) => (
-            
-            <div
-              key={post.id}
-              className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100 my-5 border-2 border-blue-300"
-            >
-              <div className="action-btns flex gap-2 justify-end p-1">
-                <Link href={`/post-edit/${post.id}`} className="text-white p-1 rounded bg-blue-500"><FaRegEdit /></Link>
-                <button className="text-white p-1 cursor-pointer rounded bg-red-500" onClick={()=>handlePostDelete(post.id)}><FaRegTrashAlt /></button>
-              </div>
-              <div className="px-6 py-4">
-                <Link href={`/post-details/${post.id}`}>
-                   {post?.image ? <img src={imagePath + post.image ?? null} alt="post" /> 
-                   : 
-                   <img className="text-center" src="/noimg.png" alt="post" />}
-                            
-                  <div className="font-bold text-xl my-2">{post.title}</div>
-                </Link>
-                <p className="text-gray-700 text-base">{post.desciption}</p>
-              </div>
-              <div className="w-full border-1 border-blue-300"></div>
-
-              <div className="px-6 pt-4 pb-2">
-                {post?.comments.length > 0
-                  ? post?.comments.map((comment) => (
-                      <div
-                        key={comment.id}
-                        className="comment-area my-3 border-2 border-gray-300 p-2 rounded"
-                      >
-                        <div className="author-area flex items-center gap-2">
-                          <img
-                            className="w-8 h-8"
-                            src="https://static-00.iconduck.com/assets.00/user-icon-1024x1024-dtzturco.png"
-                            alt="author"
-                          />
-                          <p className="text-black font-bold">
-                            {comment?.user?.name}
-                          </p>
-                        </div>
-                        <span className="text-black">{comment.comment}</span>
-                      </div>
-                    ))
-                  : "No comments."}
-              </div>
-
-              <div className="px-6 pt-4 pb-2">
-                <form
-                  className="max-w-sm mx-auto flex item-center justify-between gap-2"
-                  onSubmit={(e) => handleCommentSubmit(e, post.id)}
-                >
-                  <div className="w-full">
-                    <input
-                      type="text"
-                      id="text"
-                      name={post.id}
-                      value={formData[post.id]}
-                      onChange={(e) => handleChange(e, post.id)}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="Comment..."
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="text-white h-10 bg-sky-700 hover:bg-sky-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-300 dark:focus:ring-blue-800"
+          {success && (
+            <p className="text-green-500 text-center text-lg font-medium">
+              {success}
+            </p>
+          )}
+          {posts.length > 0 ? (
+            posts.map((post) => (
+              <div
+                key={post.id}
+                className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100 my-5 border-2 border-blue-300"
+              >
+                <div className="action-btns flex gap-2 justify-end p-1">
+                  <Link
+                    href={`/post-edit/${post.id}`}
+                    className="text-white p-1 rounded bg-blue-500"
                   >
-                    Submit
+                    <FaRegEdit />
+                  </Link>
+                  <button
+                    className="text-white p-1 cursor-pointer rounded bg-red-500"
+                    onClick={() => handlePostDelete(post.id)}
+                  >
+                    <FaRegTrashAlt />
                   </button>
-                </form>
+                </div>
+                <div className="px-6 py-4">
+                  <Link href={`/post-details/${post.id}`}>
+                    {post?.image ? (
+                      <img src={imagePath + post.image ?? null} alt="post" />
+                    ) : (
+                      <img
+                        className="text-center"
+                        src="/noimg.png"
+                        alt="post"
+                      />
+                    )}
+
+                    <div className="font-bold text-xl my-2">{post.title}</div>
+                  </Link>
+                  <p className="text-gray-700 text-base">{post.desciption}</p>
+                </div>
+                <div className="w-full border-1 border-blue-300"></div>
+
+                <div className="px-6 pt-4 pb-2">
+                  {post?.comments.length > 0
+                    ? post?.comments.map((comment) => (
+                        <div
+                          key={comment.id}
+                          className="comment-area my-3 border-2 border-gray-300 p-2 rounded"
+                        >
+                          <div className="author-area flex items-center gap-2">
+                            <img
+                              className="w-8 h-8"
+                              src="https://static-00.iconduck.com/assets.00/user-icon-1024x1024-dtzturco.png"
+                              alt="author"
+                            />
+                            <p className="text-black font-bold">
+                              {comment?.user?.name}
+                            </p>
+                          </div>
+                          <span className="text-black">{comment.comment}</span>
+                        </div>
+                      ))
+                    : "No comments."}
+                </div>
+
+                <div className="px-6 pt-4 pb-2">
+                  <form
+                    className="max-w-sm mx-auto flex item-center justify-between gap-2"
+                    onSubmit={(e) => handleCommentSubmit(e, post.id)}
+                  >
+                    <div className="w-full">
+                      <input
+                        type="text"
+                        id="text"
+                        name={post.id}
+                        value={formData[post.id]}
+                        onChange={(e) => handleChange(e, post.id)}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Comment..."
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="text-white h-10 bg-sky-700 hover:bg-sky-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-300 dark:focus:ring-blue-800"
+                    >
+                      Submit
+                    </button>
+                  </form>
+                </div>
               </div>
+            ))
+          ) : (
+            <div className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100 my-5 border-2 border-red-500 text-center p-5 font-bold">
+              No Blog Found
             </div>
-          )) 
-          :
-          <div
-            
-              className="max-w-sm m-auto rounded overflow-hidden shadow-lg bg-sky-100 my-5 border-2 border-red-500 text-center p-5 font-bold"
-            >
-             No Blog Found
-            </div>
-          }
+          )}
         </div>
       </AuthGuard>
     </>

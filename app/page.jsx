@@ -27,9 +27,7 @@ const Home = () => {
     setError("");
 
     try {
-      const response = await api.post("/login",
-        formData
-      );
+      const response = await api.post("/login", formData);
 
       localStorage.setItem("authToken", response.data.data.token);
       route.push("/dashboard");
@@ -42,13 +40,13 @@ const Home = () => {
 
   return (
     <AuthGuard requireAuth={false}>
-      <main className="post-create-area">
+      <main className="post-create-area flex items-center h-screen">
         <form
-          className="max-w-sm mx-auto bg-sky-200 p-2 my-5 rounded"
+          className="max-w-sm mx-auto bg-sky-200 p-2 my-5 rounded w-96 "
           onSubmit={handleSubmit}
         >
           <div className="title-area text-center font-bold font-lg">
-            <h4>Login</h4>
+            <h2 className="text-xl">Login</h2>
             <div className="w-full border-1 border-sky-700 my-5"></div>
           </div>
           {error && <p className="text-red-500 text-center">{error}</p>}
@@ -83,7 +81,7 @@ const Home = () => {
               disabled={loading}
               className="text-white bg-sky-700 m-auto w-20 font-bold hover:bg-sky-500 py-2 rounded"
             >
-              {loading ? "Loading..." : "Submit"}
+              {loading ? "Loading..." : "Login"}
             </button>
           </div>
           <div className="button-area text-center">
